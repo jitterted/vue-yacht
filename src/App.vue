@@ -5,6 +5,10 @@
         @click="startGame"
     >Start Game
     </button>
+    <button
+        @click="rollDice"
+    >Roll Dice
+    </button>
   </div>
 </template>
 
@@ -19,14 +23,29 @@
   export default class App extends Vue {
     private readonly startGameUrl = '/api/start-game'
     private readonly lastRollUrl = '/api/last-roll'
+    private readonly rollDiceUrl = '/api/roll-dice'
 
     private lastRoll = '(no last roll)'
 
     startGame() {
-      fetch(this.startGameUrl, {
+      this.postTo(this.startGameUrl);
+      this.fetchLastDiceRoll();
+    }
+
+    rollDice() {
+      this.postTo(this.rollDiceUrl)
+      this.fetchLastDiceRoll()
+    }
+
+
+    private postTo(url: string) {
+      fetch(url, {
           method: 'POST'
         }
       )
+    }
+
+    private fetchLastDiceRoll() {
       fetch(this.lastRollUrl)
         .then(response => response.json())
         .then(lastRollResultJson => this.lastRoll = lastRollResultJson.roll)
