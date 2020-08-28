@@ -1,6 +1,15 @@
 <template>
   <div id="app">
-    <div>Dice Roll: {{ lastRoll }}</div>
+    <div>Dice Roll:
+      <span
+          v-for="(die, index) in lastRoll"
+          :key="index"
+      >
+        <input
+            type="checkbox"
+        >{{ die }}
+      </span>
+    </div>
     <button
         @click="startGame"
     >Start Game
@@ -48,7 +57,7 @@
     private readonly rollDiceUrl = '/api/roll-dice'
     private readonly scoreCategoriesUrl = '/api/score-categories'
 
-    private lastRoll = '(no last roll)'
+    private lastRoll: number[] = []
     private scoreInfo: ScoreInfo = {totalScore: 0, categories: []}
 
     async startGame() {

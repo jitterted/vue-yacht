@@ -1,29 +1,12 @@
-# vue-yacht
+# Vue Front-End for Yacht Dice Game
 
-## Project setup
-```
-yarn install
-```
+## Next Tasks
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+[ ] Be able to keep/hold 0-5 of the dice, re-roll the rest (up to 2 re-rolls)
+    [X] Display individual dice as checkbox items
+    [ ] Click/check to keep that die
+    [ ] Upon *re-roll* click, do a POST of the kept die(s)
+    [ ] Enable re-roll button based on number of rolls
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Completed Tasks
 
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
