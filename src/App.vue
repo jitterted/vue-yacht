@@ -13,7 +13,10 @@
     <div v-for="(category, index) in scoreInfo.categories"
          :key="index"
     >
-      <button>{{ category.description }}</button>
+      <button
+          @click="assignRoll(category.description)"
+      >{{ category.description }}
+      </button>
       {{category.diceRoll}}
       {{category.score}}
     </div>
@@ -48,36 +51,49 @@
     private lastRoll = '(no last roll)'
     private scoreInfo: ScoreInfo = {totalScore: 0, categories: []}
 
-    startGame() {
-      this.postTo(this.startGameUrl);
-      this.fetchLastDiceRoll();
+    async startGame() {
+      await this.postTo(this.startGameUrl);
+      await this.fetchLastDiceRoll();
     }
 
-    rollDice() {
-      this.postTo(this.rollDiceUrl)
-      this.fetchLastDiceRoll()
+    async rollDice() {
+      await this.postTo(this.rollDiceUrl)
+      await this.fetchLastDiceRoll()
     }
 
+    async assignRoll(categoryDescription: string) {
+      await fetch('/api/assign-roll', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({category: categoryDescription})
+      })
+      await this.fetchLastDiceRoll()
+    }
 
-    private postTo(url: string) {
-      fetch(url, {
+    private async postTo(url: string) {
+      await fetch(url, {
           method: 'POST'
         }
       )
     }
 
-    private fetchLastDiceRoll() {
-      console.log("Getting Last Roll...")
-      fetch(this.lastRollUrl)
-        .then(response => response.json())
-        .then(lastRollResultJson => this.lastRoll = lastRollResultJson.roll)
-        .catch(error => console.log('Refresh error: ' + error))
+    private async fetchLastDiceRoll() {
+      let response = await fetch(this.lastRollUrl)
+      // could check response here, e.g.:
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
+      const lastRollResultJson = await response.json()
+      this.lastRoll = lastRollResultJson.roll
 
-      console.log("Getting Score and Categories")
-      fetch(this.scoreCategoriesUrl)
-        .then(response => response.json())
-        .then(json => this.scoreInfo = json)
-        .catch(error => console.log('Refresh error: ' + error))
+      // .catch(error => console.log('Refresh error: ' + error))
+
+      response = await fetch(this.scoreCategoriesUrl)
+      this.scoreInfo = await response.json()
+
+      // .catch(error => console.log('Refresh error: ' + error))
     }
   }
 </script>
