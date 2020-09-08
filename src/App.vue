@@ -71,7 +71,7 @@ interface Category {
     private rollCount = 0;
 
     get canReroll() {
-      return this.rollCount < 3
+      return this.rollCount > 0 && this.rollCount < 3
     }
 
     public rerollCompleted() {

@@ -1,8 +1,8 @@
 import {shallowMount} from '@vue/test-utils'
 import App from "@/App.vue"
 
-describe('Limit rerolls after initial roll', () => {
-  it('can reroll', () => {
+describe('Can reroll', () => {
+  it('when initial roll is completed', () => {
     const wrapper: any = shallowMount(App, {
       propsData: {}
     })
@@ -12,7 +12,7 @@ describe('Limit rerolls after initial roll', () => {
     expect(wrapper.vm.canReroll).toBeTruthy()
   })
 
-  it('and one reroll can still reroll', () => {
+  it('when one reroll completed', () => {
     const wrapper: any = shallowMount(App, {
       propsData: {}
     })
@@ -23,8 +23,10 @@ describe('Limit rerolls after initial roll', () => {
 
     expect(wrapper.vm.canReroll).toBeTruthy()
   })
+})
 
-  it('and after two rerolls can no longer reroll', () => {
+describe('Can not reroll', () => {
+  it('after two rerolls', () => {
     const wrapper: any = shallowMount(App, {
       propsData: {}
     })
@@ -35,4 +37,13 @@ describe('Limit rerolls after initial roll', () => {
 
     expect(wrapper.vm.canReroll).toBeFalsy()
   })
+
+  it('until initial roll is completed', () => {
+    const wrapper: any = shallowMount(App, {
+      propsData: {}
+    })
+
+    expect(wrapper.vm.canReroll).toBeFalsy()
+  })
+
 })
